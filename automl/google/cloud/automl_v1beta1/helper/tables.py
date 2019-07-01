@@ -88,8 +88,8 @@ class ClientHelper(object):
 
         if dataset_name is None:
             if dataset is None:
-                dataset = get_dataset(
-                        dataset_display_name=datatset_display_name,
+                dataset = self.get_dataset(
+                        dataset_display_name=dataset_display_name,
                         project=project,
                         region=region
                 )
@@ -106,8 +106,8 @@ class ClientHelper(object):
 
         if model_name is None:
             if model is None:
-                model = get_model(
-                        model_display_name=datatset_display_name,
+                model = self.get_model(
+                        model_display_name=dataset_display_name,
                         project=project,
                         region=region
                 )
@@ -580,11 +580,23 @@ class ClientHelper(object):
                 region=region
         )
 
+        # type code must always be set
+        if type_code is None:
+            type_code = {s.name: s for s in self.list_column_specs(
+                    dataset=dataset,
+                    dataset_display_name=dataset_display_name,
+                    dataset_name=dataset_name,
+                    table_spec_name=table_spec_name,
+                    table_spec_index=table_spec_index,
+                    project=project,
+                    region=region)
+            }[column_spec_name].data_type.type_code
+
         data_type = {}
         if nullable is not None:
             data_type['nullable'] = nullable
-        if type_code is not None:
-            data_type['type_code'] = type_code
+
+        data_type['type_code'] = type_code
 
         request = {
                 'name': column_spec_name,
