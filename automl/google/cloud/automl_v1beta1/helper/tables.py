@@ -515,7 +515,7 @@ class ClientHelper(object):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
             table_spec_name (Optional[string]):
-                The name AutoML-assigned name for the table whose specs you
+                The AutoML-assigned name for the table whose specs you
                 want to read. If not supplied, the client can determine this name
                 from a source `Dataset` object.
             table_spec_index (Optional[int]):
@@ -568,6 +568,73 @@ class ClientHelper(object):
             dataset_name=None, table_spec_name=None, table_spec_index=0,
             column_spec_name=None, column_spec_display_name=None,
             type_code=None, nullable=None, project=None, region=None):
+        """Updates a column's specs.
+
+        Example:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> client = automl_v1beta1.tables.ClientHelper(
+            ...     client=automl_v1beta1.AutoMlClient(),
+            ...     project='my-project', region='us-central1')
+            ...
+            >>> client.update_column_specs(dataset_display_name='my_dataset',
+            ...     column_spec_display_name='Outcome', type_code='CATEGORY')
+            >>>
+
+        Args:
+            project (Optional[string]):
+                If you have initialized the client with a value for `project` it
+                will be used if this parameter is not supplied. Keep in mind, the
+                service account this client was initialized with must have access
+                to this project.
+            region (Optional[string]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
+            column_spec_name (Optional[string]):
+                The name AutoML-assigned name for the column you want to 
+                update.
+            column_spec_display_name (Optional[string]):
+                The human-readable name of the column you want to update. If 
+                this is supplied in place of `column_spec_name`, you also
+                need to provide either a way to lookup the source dataset
+                (using one of the `dataset*` kwargs), or the `table_spec_name`
+                of the table this column belongs to.
+            table_spec_name (Optional[string]):
+                The AutoML-assigned name for the table whose specs you
+                want to update. If not supplied, the client can determine this name
+                from a source `Dataset` object.
+            table_spec_index (Optional[int]):
+                If no `table_spec_name` was provided, we use this index to
+                determine which table to update column specs on.
+            dataset_display_name (Optional[string]):
+                The human-readable name given to the dataset you want to update 
+                specs on. If no `table_spec_name` is supplied, this will
+                be used together with `table_spec_index` to infer the name of
+                table to update specs on. This must be supplied if `table_spec_name`,
+                `dataset` or `dataset_name` are not supplied.
+            dataset_name (Optional[string]):
+                The AutoML-assigned name given to the dataset you want to update 
+                specs one. If no `table_spec_name` is supplied, this will
+                be used together with `table_spec_index` to infer the name of
+                table to update specs on. This must be supplied if `table_spec_name`,
+                `dataset` or `dataset_display_name` are not supplied.
+            dataset (Optional[Dataset]):
+                The `Dataset` instance you want to update  
+                specs on. If no `table_spec_name` is supplied, this will
+                be used together with `table_spec_index` to infer the name of
+                table to update specs on. This must be supplied if `table_spec_name`,
+                `dataset_name` or `dataset_display_name` are not supplied.
+
+        Returns:
+            A :class:`~google.cloud.automl_v1beta1.types.ColumnSpec` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                to a retryable error and retry attempts failed.
+            ValueError: If required parameters are missing.
+        """
         column_spec_name = self.__column_spec_name_from_args(
                 dataset=dataset,
                 dataset_display_name=dataset_display_name,
