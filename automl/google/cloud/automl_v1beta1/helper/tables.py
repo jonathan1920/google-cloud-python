@@ -14,7 +14,7 @@
 
 """A helper for the google.cloud.automl_v1beta1 AutoML Tables API"""
 
-import google.cloud.automl_v1beta1.proto.data_types_pb2 as data_types
+from google.cloud.automl_v1beta1.proto import data_types_pb2
 
 class ClientHelper(object):
     """
@@ -31,9 +31,7 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> from google_helper.cloud.automl import tables
-            >>>
-            >>> client = tables.ClientHelper(
+            >>> client = automl_v1beta1.tables.ClientHelper(
             ...     client=automl_v1beta1.AutoMlClient(),
             ...     prediction_client=automl_v1beta1.PredictionServiceClient(),
             ...     project='my-project', region='us-central1')
@@ -139,9 +137,9 @@ class ClientHelper(object):
     ## TODO(lwander): what other type codes are there?
     ## https://github.com/googleapis/google-cloud-python/blob/master/automl/google/cloud/automl_v1beta1/proto/data_types_pb2.py#L87-L92
     def __type_code_to_value_type(self, type_code):
-        if type_code == data_types.FLOAT64:
+        if type_code == data_types_pb2.FLOAT64:
             return 'number_value'
-        if type_code == data_types.CATEGORY:
+        if type_code == data_types_pb2.CATEGORY:
             return 'string_value'
         else:
             raise ValueError('Unknown type_code: {}'.format(type_code))
@@ -152,9 +150,7 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> from google_helper.cloud.automl import tables
-            >>>
-            >>> client = tables.ClientHelper(
+            >>> client = automl_v1beta1.tables.ClientHelper(
             ...     client=automl_v1beta1.AutoMlClient(),
             ...     project='my-project', region='us-central1')
             >>>
@@ -175,9 +171,10 @@ class ClientHelper(object):
                 will be used if this parameter is not supplied.
 
         Returns:
-            An iterator over `Dataset
-            <https://googleapis.github.io/google-cloud-python/latest/automl/gapic/v1beta1/types.html#google.cloud.automl_v1beta1.types.Dataset>`_
-            instances.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.automl_v1beta1.types.Dataset` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -197,9 +194,7 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> from google_helper.cloud.automl import tables
-            >>>
-            >>> client = tables.ClientHelper(
+            >>> client = automl_v1beta1.tables.ClientHelper(
             ...     client=automl_v1beta1.AutoMlClient(),
             ...     project='my-project', region='us-central1')
             >>>
@@ -226,9 +221,7 @@ class ClientHelper(object):
                 must be provided.
 
         Returns:
-            A `Dataset
-            <https://googleapis.github.io/google-cloud-python/latest/automl/gapic/v1beta1/types.html#google.cloud.automl_v1beta1.types.Dataset>`_
-            instance.
+            A :class:`~google.cloud.automl_v1beta1.types.Dataset` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -255,9 +248,7 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> from google_helper.cloud.automl import tables
-            >>>
-            >>> client = tables.ClientHelper(
+            >>> client = automl_v1beta1.tables.ClientHelper(
             ...     client=automl_v1beta1.AutoMlClient(),
             ...     project='my-project', region='us-central1')
             >>>
@@ -276,10 +267,7 @@ class ClientHelper(object):
                 A human-readable name to refer to this dataset by.
 
         Returns:
-            A :class:`~google_helper.cloud.automl.types.Dataset` instance,
-            which acts as a delegate to the `Dataset
-            <https://googleapis.github.io/google-cloud-python/latest/automl/gapic/v1beta1/types.html#google.cloud.automl_v1beta1.types.Dataset>`_
-            class.
+            A :class:`~google.cloud.automl_v1beta1.types.Dataset` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -288,7 +276,7 @@ class ClientHelper(object):
                 to a retryable error and retry attempts failed.
             ValueError: If required parameters are missing.
         """
-        return dataset=self.client.create_dataset(
+        return self.client.create_dataset(
                     self.__location_path(project, region),
                     {
                         'display_name': dataset_display_name,
@@ -298,6 +286,52 @@ class ClientHelper(object):
 
     def delete_dataset(self, dataset=None, dataset_display_name=None,
             dataset_name=None, project=None, region=None):
+        """Deletes a dataset. This does not delete any models trained on
+        this dataset.
+
+        Example:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> client = automl_v1beta1.tables.ClientHelper(
+            ...     client=automl_v1beta1.AutoMlClient(),
+            ...     project='my-project', region='us-central1')
+            >>>
+            >>> op = client.delete_dataset(dataset_display_name='my_dataset')
+            >>>
+            >>> op.result() # blocks on delete request
+
+        Args:
+            project (Optional[string]):
+                If you have initialized the client with a value for `project` it
+                will be used if this parameter is not supplied. Keep in mind, the
+                service account this client was initialized with must have access
+                to this project.
+            region (Optional[string]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
+            dataset_display_name (Optional[string]):
+                The human-readable name given to the dataset you want to delete.
+                This must be supplied if `dataset` or `dataset_name` are not
+                supplied.
+            dataset_name (Optional[string]):
+                The AutoML-assigned name given to the dataset you want to
+                delete. This must be supplied if
+                `dataset_display_name` or `dataset` are not supplied.
+            dataset (Optional[Dataset]):
+                The `Dataset` instance you want to delete. This must
+                be supplied if `dataset_display_name` or `dataset_name` are not
+                supplied.
+
+        Returns:
+            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                to a retryable error and retry attempts failed.
+            ValueError: If required parameters are missing.
+        """
         dataset_name = self.__dataset_name_from_args(dataset=dataset,
                 dataset_name=dataset_name,
                 dataset_display_name=dataset_display_name,
@@ -315,9 +349,7 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> from google_helper.cloud.automl import tables
-            >>>
-            >>> client = tables.ClientHelper(
+            >>> client = automl_v1beta1.tables.ClientHelper(
             ...     client=automl_v1beta1.AutoMlClient(),
             ...     project='my-project', region='us-central1')
             >>>
@@ -361,8 +393,7 @@ class ClientHelper(object):
                 import. This must be supplied if `gcs_input_uris` is not.
 
         Returns:
-            An `OperationFuture`, which can either be used to register a
-            callback, or block until completion.
+            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -400,6 +431,55 @@ class ClientHelper(object):
 
     def list_table_specs(self, dataset=None, dataset_display_name=None,
             dataset_name=None, project=None, region=None):
+        """Lists table specs.
+
+        Example:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> client = automl_v1beta1.tables.ClientHelper(
+            ...     client=automl_v1beta1.AutoMlClient(),
+            ...     project='my-project', region='us-central1')
+            >>>
+            >>> for s in client.list_table_specs(dataset_display_name='my_dataset')
+            ...     # process the spec
+            ...     pass
+            >>>
+
+        Args:
+            project (Optional[string]):
+                If you have initialized the client with a value for `project` it
+                will be used if this parameter is not supplied. Keep in mind, the
+                service account this client was initialized with must have access
+                to this project.
+            region (Optional[string]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
+            dataset_display_name (Optional[string]):
+                The human-readable name given to the dataset you want to read
+                specs from. This must be supplied if `dataset` or
+                `dataset_name` are not supplied.
+            dataset_name (Optional[string]):
+                The AutoML-assigned name given to the dataset you want to
+                read specs from. This must be supplied if
+                `dataset_display_name` or `dataset` are not supplied.
+            dataset (Optional[Dataset]):
+                The `Dataset` instance you want to read specs from. This must
+                be supplied if `dataset_display_name` or `dataset_name` are not
+                supplied.
+
+        Returns:
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.automl_v1beta1.types.TableSpec` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                to a retryable error and retry attempts failed.
+            ValueError: If required parameters are missing.
+        """
         dataset_name = self.__dataset_name_from_args(dataset=dataset,
                 dataset_name=dataset_name,
                 dataset_display_name=dataset_display_name,
@@ -408,11 +488,71 @@ class ClientHelper(object):
 
         return self.client.list_table_specs(dataset_name)
 
-    # if no table_name is provided, the table_index in the table_specs
-    # is picked.
     def list_column_specs(self, dataset=None, dataset_display_name=None,
             dataset_name=None, table_spec_name=None, table_spec_index=0,
             project=None, region=None):
+        """Lists column specs.
+
+        Example:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> client = automl_v1beta1.tables.ClientHelper(
+            ...     client=automl_v1beta1.AutoMlClient(),
+            ...     project='my-project', region='us-central1')
+            >>>
+            >>> for s in client.list_column_specs(dataset_display_name='my_dataset')
+            ...     # process the spec
+            ...     pass
+            >>>
+
+        Args:
+            project (Optional[string]):
+                If you have initialized the client with a value for `project` it
+                will be used if this parameter is not supplied. Keep in mind, the
+                service account this client was initialized with must have access
+                to this project.
+            region (Optional[string]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
+            table_spec_name (Optional[string]):
+                The name AutoML-assigned name for the table whose specs you
+                want to read. If not supplied, the client can determine this name
+                from a source `Dataset` object.
+            table_spec_index (Optional[int]):
+                If no `table_spec_name` was provided, we use this index to
+                determine which table to read column specs from.
+            dataset_display_name (Optional[string]):
+                The human-readable name given to the dataset you want to read
+                specs from. If no `table_spec_name` is supplied, this will
+                be used together with `table_spec_index` to infer the name of
+                table to read specs from. This must be supplied if `table_spec_name`,
+                `dataset` or `dataset_name` are not supplied.
+            dataset_name (Optional[string]):
+                The AutoML-assigned name given to the dataset you want to read
+                specs from. If no `table_spec_name` is supplied, this will
+                be used together with `table_spec_index` to infer the name of
+                table to read specs from. This must be supplied if `table_spec_name`,
+                `dataset` or `dataset_display_name` are not supplied.
+            dataset (Optional[Dataset]):
+                The `Dataset` instance you want to read
+                specs from. If no `table_spec_name` is supplied, this will
+                be used together with `table_spec_index` to infer the name of
+                table to read specs from. This must be supplied if `table_spec_name`,
+                `dataset_name` or `dataset_display_name` are not supplied.
+
+        Returns:
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.automl_v1beta1.types.ColumnSpec` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                to a retryable error and retry attempts failed.
+            ValueError: If required parameters are missing.
+        """
         if table_spec_name is None:
             table_specs = [t for t in self.list_table_specs(dataset=dataset,
                     dataset_display_name=dataset_display_name,
