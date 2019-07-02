@@ -1130,6 +1130,54 @@ class ClientHelper(object):
     #TODO(jonathanskim): allow deployment from just model ID
     def deploy_model(self, model=None, model_name=None,
             model_display_name=None, project=None, region=None):
+        """Deploys a model. This allows you make online predictions using the 
+        model you've deployed.
+
+        Example:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> client = automl_v1beta1.tables.ClientHelper(
+            ...     client=automl_v1beta1.AutoMlClient(),
+            ...     project='my-project', region='us-central1')
+            ...
+            >>> op = client.deploy_model(model_display_name='my_model')
+            >>>
+            >>> op.result() # blocks on deploy request
+            >>>
+
+        Args:
+            project (Optional[string]):
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
+            region (Optional[string]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
+            model_display_name (Optional[string]):
+                The human-readable name given to the model you want to
+                deploy.  This must be supplied if `model` or `model_name`
+                are not supplied.
+            model_name (Optional[string]):
+                The AutoML-assigned name given to the model you want to
+                deploy. This must be supplied if `model_display_name` or
+                `model` are not supplied.
+            model (Optional[model]):
+                The `model` instance you want to deploy. This must be
+                supplied if `model_display_name` or `model_name` are not
+                supplied.
+
+        Returns:
+            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
+            instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                to a retryable error and retry attempts failed.
+            ValueError: If required parameters are missing.
+        """
         model_name = self.__model_name_from_args(
                 model=model,
                 model_name=model_name,
@@ -1142,6 +1190,53 @@ class ClientHelper(object):
 
     def undeploy_model(self, model=None, model_name=None,
             model_display_name=None, project=None, region=None):
+        """Undeploys a model. 
+
+        Example:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> client = automl_v1beta1.tables.ClientHelper(
+            ...     client=automl_v1beta1.AutoMlClient(),
+            ...     project='my-project', region='us-central1')
+            ...
+            >>> op = client.undeploy_model(model_display_name='my_model')
+            >>>
+            >>> op.result() # blocks on undeploy request
+            >>>
+
+        Args:
+            project (Optional[string]):
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
+            region (Optional[string]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
+            model_display_name (Optional[string]):
+                The human-readable name given to the model you want to
+                undeploy.  This must be supplied if `model` or `model_name`
+                are not supplied.
+            model_name (Optional[string]):
+                The AutoML-assigned name given to the model you want to
+                undeploy. This must be supplied if `model_display_name` or
+                `model` are not supplied.
+            model (Optional[model]):
+                The `model` instance you want to undeploy. This must be
+                supplied if `model_display_name` or `model_name` are not
+                supplied.
+
+        Returns:
+            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
+            instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                to a retryable error and retry attempts failed.
+            ValueError: If required parameters are missing.
+        """
         model_name = self.__model_name_from_args(
                 model=model,
                 model_name=model_name,
