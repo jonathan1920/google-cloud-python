@@ -591,10 +591,10 @@ class ClientHelper(object):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
             column_spec_name (Optional[string]):
-                The name AutoML-assigned name for the column you want to 
+                The name AutoML-assigned name for the column you want to
                 update.
             column_spec_display_name (Optional[string]):
-                The human-readable name of the column you want to update. If 
+                The human-readable name of the column you want to update. If
                 this is supplied in place of `column_spec_name`, you also
                 need to provide either a way to lookup the source dataset
                 (using one of the `dataset*` kwargs), or the `table_spec_name`
@@ -607,19 +607,19 @@ class ClientHelper(object):
                 If no `table_spec_name` was provided, we use this index to
                 determine which table to update column specs on.
             dataset_display_name (Optional[string]):
-                The human-readable name given to the dataset you want to update 
+                The human-readable name given to the dataset you want to update
                 specs on. If no `table_spec_name` is supplied, this will
                 be used together with `table_spec_index` to infer the name of
                 table to update specs on. This must be supplied if `table_spec_name`,
                 `dataset` or `dataset_name` are not supplied.
             dataset_name (Optional[string]):
-                The AutoML-assigned name given to the dataset you want to update 
+                The AutoML-assigned name given to the dataset you want to update
                 specs one. If no `table_spec_name` is supplied, this will
                 be used together with `table_spec_index` to infer the name of
                 table to update specs on. This must be supplied if `table_spec_name`,
                 `dataset` or `dataset_display_name` are not supplied.
             dataset (Optional[Dataset]):
-                The `Dataset` instance you want to update  
+                The `Dataset` instance you want to update
                 specs on. If no `table_spec_name` is supplied, this will
                 be used together with `table_spec_index` to infer the name of
                 table to update specs on. This must be supplied if `table_spec_name`,
@@ -699,7 +699,7 @@ class ClientHelper(object):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
             column_spec_name (Optional[string]):
-                The name AutoML-assigned name for the column you want to 
+                The name AutoML-assigned name for the column you want to
                 set as the target column.
             column_spec_display_name (Optional[string]):
                 The human-readable name of the column you want to set as the
@@ -802,7 +802,7 @@ class ClientHelper(object):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
             column_spec_name (Optional[string]):
-                The name AutoML-assigned name for the column you want to 
+                The name AutoML-assigned name for the column you want to
                 set as the weight column.
             column_spec_display_name (Optional[string]):
                 The human-readable name of the column you want to set as the
@@ -879,6 +879,44 @@ class ClientHelper(object):
         return self.client.update_dataset(request)
 
     def list_models(self, project=None, region=None):
+        """List all models in a particular project and region.
+
+        Example:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> client = automl_v1beta1.tables.ClientHelper(
+            ...     client=automl_v1beta1.AutoMlClient(),
+            ...     project='my-project', region='us-central1')
+            >>>
+            >>> ms = client.list_models()
+            >>>
+            >>> for m in ms:
+            ...     # do something
+            ...     pass
+
+        Args:
+            project (Optional[string]):
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
+            region (Optional[string]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
+
+        Returns:
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.automl_v1beta1.types.Model`
+            instances.  You can also iterate over the pages of the response
+            using its `pages` property.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                to a retryable error and retry attempts failed.
+            ValueError: If required parameters are missing.
+        """
         return self.client.list_models(
                 self.__location_path(project=project, region=region)
         )
@@ -887,6 +925,55 @@ class ClientHelper(object):
             dataset_display_name=None, dataset_name=None,
             train_budget_milli_node_hours=None, project=None,
             region=None):
+        """Create a model. This will train your model on the given dataset.
+
+        Example:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> client = automl_v1beta1.tables.ClientHelper(
+            ...     client=automl_v1beta1.AutoMlClient(),
+            ...     project='my-project', region='us-central1')
+            >>>
+            >>> d = client.create_model('my_model', dataset_display_name='my_dataset')
+
+        Args:
+            project (Optional[string]):
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
+            region (Optional[string]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
+            model_display_name (string):
+                a human-readable name to refer to this model by.
+            train_budget_milli_node_hours (int):
+                The amount of time (in thousandths of an hour) to spend
+                training. This value must be between 1,000 and 72,000 inclusive
+                (between 1 and 72 hours).
+            dataset_display_name (Optional[string]):
+                The human-readable name given to the dataset you want to train
+                your model on. This must be supplied if `dataset` or
+                `dataset_name` are not supplied.
+            dataset_name (Optional[string]):
+                The AutoML-assigned name given to the dataset you want to train
+                your model on. This must be supplied if `dataset_display_name`
+                or `dataset` are not supplied.
+            dataset (Optional[Dataset]):
+                The `Dataset` instance you want to train your model on. This
+                must be supplied if `dataset_display_name` or `dataset_name`
+                are not supplied.
+
+        Returns:
+            A :class:`~google.cloud.automl_v1beta1.types.Dataset` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                to a retryable error and retry attempts failed.
+            ValueError: If required parameters are missing.
+        """
         if train_budget_milli_node_hours is None:
             raise ValueError('\'train_budget_milli_node_hours\' must be a '
                     'value between 1,000 and 72,000 inclusive')
@@ -930,6 +1017,7 @@ class ClientHelper(object):
         return next(m for m in self.list_models(project, region)
                 if m.name == model_name
                 or m.display_name == model_display_name)
+
     #TODO(jonathanskim): allow deployment from just model ID
     def deploy_model(self, model=None, model_name=None,
             model_display_name=None, project=None, region=None):
