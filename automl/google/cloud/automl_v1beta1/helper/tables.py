@@ -35,6 +35,7 @@ class ClientHelper(object):
             ...     client=automl_v1beta1.AutoMlClient(),
             ...     prediction_client=automl_v1beta1.PredictionServiceClient(),
             ...     project='my-project', region='us-central1')
+            ...
 
         Args:
             client (Optional[google.cloud.automl.v1beta1.AutoMlClient]): An
@@ -153,27 +154,28 @@ class ClientHelper(object):
             >>> client = automl_v1beta1.tables.ClientHelper(
             ...     client=automl_v1beta1.AutoMlClient(),
             ...     project='my-project', region='us-central1')
-            >>>
+            ...
             >>> ds = client.list_datasets()
             >>>
             >>> for d in ds:
             ...     # do something
             ...     pass
+            ...
 
         Args:
             project (Optional[string]):
-                If you have initialized the client with a value for `project` it
-                will be used if this parameter is not supplied. Keep in mind, the
-                service account this client was initialized with must have access
-                to this project.
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
             region (Optional[string]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
 
         Returns:
             A :class:`~google.api_core.page_iterator.PageIterator` instance.
-            An iterable of :class:`~google.cloud.automl_v1beta1.types.Dataset` instances.
-            You can also iterate over the pages of the response
+            An iterable of :class:`~google.cloud.automl_v1beta1.types.Dataset`
+            instances.  You can also iterate over the pages of the response
             using its `pages` property.
 
         Raises:
@@ -197,15 +199,16 @@ class ClientHelper(object):
             >>> client = automl_v1beta1.tables.ClientHelper(
             ...     client=automl_v1beta1.AutoMlClient(),
             ...     project='my-project', region='us-central1')
-            >>>
+            ...
             >>> d = client.get_dataset(dataset_display_name='my_dataset')
+            >>>
 
         Args:
             project (Optional[string]):
-                If you have initialized the client with a value for `project` it
-                will be used if this parameter is not supplied. Keep in mind, the
-                service account this client was initialized with must have access
-                to this project.
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
             region (Optional[string]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
@@ -251,15 +254,16 @@ class ClientHelper(object):
             >>> client = automl_v1beta1.tables.ClientHelper(
             ...     client=automl_v1beta1.AutoMlClient(),
             ...     project='my-project', region='us-central1')
-            >>>
+            ...
             >>> d = client.create_dataset(dataset_display_name='my_dataset')
+            >>>
 
         Args:
             project (Optional[string]):
-                If you have initialized the client with a value for `project` it
-                will be used if this parameter is not supplied. Keep in mind, the
-                service account this client was initialized with must have access
-                to this project.
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
             region (Optional[string]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
@@ -295,35 +299,37 @@ class ClientHelper(object):
             >>> client = automl_v1beta1.tables.ClientHelper(
             ...     client=automl_v1beta1.AutoMlClient(),
             ...     project='my-project', region='us-central1')
-            >>>
+            ...
             >>> op = client.delete_dataset(dataset_display_name='my_dataset')
             >>>
             >>> op.result() # blocks on delete request
+            >>>
 
         Args:
             project (Optional[string]):
-                If you have initialized the client with a value for `project` it
-                will be used if this parameter is not supplied. Keep in mind, the
-                service account this client was initialized with must have access
-                to this project.
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
             region (Optional[string]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
             dataset_display_name (Optional[string]):
-                The human-readable name given to the dataset you want to delete.
-                This must be supplied if `dataset` or `dataset_name` are not
-                supplied.
+                The human-readable name given to the dataset you want to
+                delete.  This must be supplied if `dataset` or `dataset_name`
+                are not supplied.
             dataset_name (Optional[string]):
                 The AutoML-assigned name given to the dataset you want to
-                delete. This must be supplied if
-                `dataset_display_name` or `dataset` are not supplied.
+                delete. This must be supplied if `dataset_display_name` or
+                `dataset` are not supplied.
             dataset (Optional[Dataset]):
-                The `Dataset` instance you want to delete. This must
-                be supplied if `dataset_display_name` or `dataset_name` are not
+                The `Dataset` instance you want to delete. This must be
+                supplied if `dataset_display_name` or `dataset_name` are not
                 supplied.
 
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture` instance.
+            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
+            instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -352,30 +358,31 @@ class ClientHelper(object):
             >>> client = automl_v1beta1.tables.ClientHelper(
             ...     client=automl_v1beta1.AutoMlClient(),
             ...     project='my-project', region='us-central1')
-            >>>
+            ...
             >>> d = client.create_dataset(dataset_display_name='my_dataset')
             >>>
             >>> client.import_data(dataset=d,
             ...     gcs_input_uris='gs://cloud-ml-tables-data/bank-marketing.csv')
-            >>>
+            ...
             >>> def callback(operation_future):
             ...    result = operation_future.result()
-            >>>
+            ...
             >>> response.add_done_callback(callback)
+            >>>
 
         Args:
             project (Optional[string]):
-                If you have initialized the client with a value for `project` it
-                will be used if this parameter is not supplied. Keep in mind, the
-                service account this client was initialized with must have access
-                to this project.
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
             region (Optional[string]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
             dataset_display_name (Optional[string]):
                 The human-readable name given to the dataset you want to import
-                data into. This must be supplied if `dataset` or
-                `dataset_name` are not supplied.
+                data into. This must be supplied if `dataset` or `dataset_name`
+                are not supplied.
             dataset_name (Optional[string]):
                 The AutoML-assigned name given to the dataset you want to
                 import data into. This must be supplied if
@@ -393,7 +400,8 @@ class ClientHelper(object):
                 import. This must be supplied if `gcs_input_uris` is not.
 
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture` instance.
+            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
+            instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -439,18 +447,18 @@ class ClientHelper(object):
             >>> client = automl_v1beta1.tables.ClientHelper(
             ...     client=automl_v1beta1.AutoMlClient(),
             ...     project='my-project', region='us-central1')
-            >>>
+            ...
             >>> for s in client.list_table_specs(dataset_display_name='my_dataset')
             ...     # process the spec
             ...     pass
-            >>>
+            ...
 
         Args:
             project (Optional[string]):
-                If you have initialized the client with a value for `project` it
-                will be used if this parameter is not supplied. Keep in mind, the
-                service account this client was initialized with must have access
-                to this project.
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
             region (Optional[string]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
@@ -459,9 +467,9 @@ class ClientHelper(object):
                 specs from. This must be supplied if `dataset` or
                 `dataset_name` are not supplied.
             dataset_name (Optional[string]):
-                The AutoML-assigned name given to the dataset you want to
-                read specs from. This must be supplied if
-                `dataset_display_name` or `dataset` are not supplied.
+                The AutoML-assigned name given to the dataset you want to read
+                specs from. This must be supplied if `dataset_display_name` or
+                `dataset` are not supplied.
             dataset (Optional[Dataset]):
                 The `Dataset` instance you want to read specs from. This must
                 be supplied if `dataset_display_name` or `dataset_name` are not
@@ -469,9 +477,10 @@ class ClientHelper(object):
 
         Returns:
             A :class:`~google.api_core.page_iterator.PageIterator` instance.
-            An iterable of :class:`~google.cloud.automl_v1beta1.types.TableSpec` instances.
-            You can also iterate over the pages of the response
-            using its `pages` property.
+            An iterable of
+            :class:`~google.cloud.automl_v1beta1.types.TableSpec` instances.
+            You can also iterate over the pages of the response using its
+            `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -499,52 +508,55 @@ class ClientHelper(object):
             >>> client = automl_v1beta1.tables.ClientHelper(
             ...     client=automl_v1beta1.AutoMlClient(),
             ...     project='my-project', region='us-central1')
-            >>>
+            ...
             >>> for s in client.list_column_specs(dataset_display_name='my_dataset')
             ...     # process the spec
             ...     pass
-            >>>
+            ...
 
         Args:
             project (Optional[string]):
-                If you have initialized the client with a value for `project` it
-                will be used if this parameter is not supplied. Keep in mind, the
-                service account this client was initialized with must have access
-                to this project.
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
             region (Optional[string]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
             table_spec_name (Optional[string]):
-                The AutoML-assigned name for the table whose specs you
-                want to read. If not supplied, the client can determine this name
-                from a source `Dataset` object.
+                The AutoML-assigned name for the table whose specs you want to
+                read. If not supplied, the client can determine this name from
+                a source `Dataset` object.
             table_spec_index (Optional[int]):
                 If no `table_spec_name` was provided, we use this index to
                 determine which table to read column specs from.
             dataset_display_name (Optional[string]):
                 The human-readable name given to the dataset you want to read
-                specs from. If no `table_spec_name` is supplied, this will
-                be used together with `table_spec_index` to infer the name of
-                table to read specs from. This must be supplied if `table_spec_name`,
-                `dataset` or `dataset_name` are not supplied.
+                specs from. If no `table_spec_name` is supplied, this will be
+                used together with `table_spec_index` to infer the name of
+                table to read specs from. This must be supplied if
+                `table_spec_name`, `dataset` or `dataset_name` are not
+                supplied.
             dataset_name (Optional[string]):
                 The AutoML-assigned name given to the dataset you want to read
-                specs from. If no `table_spec_name` is supplied, this will
-                be used together with `table_spec_index` to infer the name of
-                table to read specs from. This must be supplied if `table_spec_name`,
-                `dataset` or `dataset_display_name` are not supplied.
+                specs from. If no `table_spec_name` is supplied, this will be
+                used together with `table_spec_index` to infer the name of
+                table to read specs from. This must be supplied if
+                `table_spec_name`, `dataset` or `dataset_display_name` are not
+                supplied.
             dataset (Optional[Dataset]):
-                The `Dataset` instance you want to read
-                specs from. If no `table_spec_name` is supplied, this will
-                be used together with `table_spec_index` to infer the name of
-                table to read specs from. This must be supplied if `table_spec_name`,
+                The `Dataset` instance you want to read specs from. If no
+                `table_spec_name` is supplied, this will be used together with
+                `table_spec_index` to infer the name of table to read specs
+                from. This must be supplied if `table_spec_name`,
                 `dataset_name` or `dataset_display_name` are not supplied.
 
         Returns:
             A :class:`~google.api_core.page_iterator.PageIterator` instance.
-            An iterable of :class:`~google.cloud.automl_v1beta1.types.ColumnSpec` instances.
-            You can also iterate over the pages of the response
-            using its `pages` property.
+            An iterable of
+            :class:`~google.cloud.automl_v1beta1.types.ColumnSpec` instances.
+            You can also iterate over the pages of the response using its
+            `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -579,14 +591,14 @@ class ClientHelper(object):
             ...
             >>> client.update_column_specs(dataset_display_name='my_dataset',
             ...     column_spec_display_name='Outcome', type_code='CATEGORY')
-            >>>
+            ...
 
         Args:
             project (Optional[string]):
-                If you have initialized the client with a value for `project` it
-                will be used if this parameter is not supplied. Keep in mind, the
-                service account this client was initialized with must have access
-                to this project.
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
             region (Optional[string]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
@@ -595,35 +607,37 @@ class ClientHelper(object):
                 update.
             column_spec_display_name (Optional[string]):
                 The human-readable name of the column you want to update. If
-                this is supplied in place of `column_spec_name`, you also
-                need to provide either a way to lookup the source dataset
-                (using one of the `dataset*` kwargs), or the `table_spec_name`
-                of the table this column belongs to.
+                this is supplied in place of `column_spec_name`, you also need
+                to provide either a way to lookup the source dataset (using one
+                of the `dataset*` kwargs), or the `table_spec_name` of the
+                table this column belongs to.
             table_spec_name (Optional[string]):
-                The AutoML-assigned name for the table whose specs you
-                want to update. If not supplied, the client can determine this name
+                The AutoML-assigned name for the table whose specs you want to
+                update. If not supplied, the client can determine this name
                 from a source `Dataset` object.
             table_spec_index (Optional[int]):
                 If no `table_spec_name` was provided, we use this index to
                 determine which table to update column specs on.
             dataset_display_name (Optional[string]):
                 The human-readable name given to the dataset you want to update
-                specs on. If no `table_spec_name` is supplied, this will
-                be used together with `table_spec_index` to infer the name of
-                table to update specs on. This must be supplied if `table_spec_name`,
-                `dataset` or `dataset_name` are not supplied.
+                specs on. If no `table_spec_name` is supplied, this will be
+                used together with `table_spec_index` to infer the name of
+                table to update specs on. This must be supplied if
+                `table_spec_name`, `dataset` or `dataset_name` are not
+                supplied.
             dataset_name (Optional[string]):
-                The AutoML-assigned name given to the dataset you want to update
-                specs one. If no `table_spec_name` is supplied, this will
-                be used together with `table_spec_index` to infer the name of
-                table to update specs on. This must be supplied if `table_spec_name`,
-                `dataset` or `dataset_display_name` are not supplied.
+                The AutoML-assigned name given to the dataset you want to
+                update specs one. If no `table_spec_name` is supplied, this
+                will be used together with `table_spec_index` to infer the name
+                of table to update specs on. This must be supplied if
+                `table_spec_name`, `dataset` or `dataset_display_name` are not
+                supplied.
             dataset (Optional[Dataset]):
-                The `Dataset` instance you want to update
-                specs on. If no `table_spec_name` is supplied, this will
-                be used together with `table_spec_index` to infer the name of
-                table to update specs on. This must be supplied if `table_spec_name`,
-                `dataset_name` or `dataset_display_name` are not supplied.
+                The `Dataset` instance you want to update specs on. If no
+                `table_spec_name` is supplied, this will be used together with
+                `table_spec_index` to infer the name of table to update specs
+                on. This must be supplied if `table_spec_name`, `dataset_name`
+                or `dataset_display_name` are not supplied.
 
         Returns:
             A :class:`~google.cloud.automl_v1beta1.types.ColumnSpec` instance.
@@ -687,7 +701,7 @@ class ClientHelper(object):
             ...
             >>> client.set_target_column(dataset_display_name='my_dataset',
             ...     column_spec_display_name='Income')
-            >>>
+            ...
 
         Args:
             project (Optional[string]):
@@ -699,8 +713,8 @@ class ClientHelper(object):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
             column_spec_name (Optional[string]):
-                The name AutoML-assigned name for the column you want to
-                set as the target column.
+                The name AutoML-assigned name for the column you want to set as
+                the target column.
             column_spec_display_name (Optional[string]):
                 The human-readable name of the column you want to set as the
                 target column. If this is supplied in place of
@@ -790,7 +804,7 @@ class ClientHelper(object):
             ...
             >>> client.set_weight_column(dataset_display_name='my_dataset',
             ...     column_spec_display_name='Income')
-            >>>
+            ...
 
         Args:
             project (Optional[string]):
@@ -887,12 +901,13 @@ class ClientHelper(object):
             >>> client = automl_v1beta1.tables.ClientHelper(
             ...     client=automl_v1beta1.AutoMlClient(),
             ...     project='my-project', region='us-central1')
-            >>>
+            ...
             >>> ms = client.list_models()
             >>>
             >>> for m in ms:
             ...     # do something
             ...     pass
+            ...
 
         Args:
             project (Optional[string]):
@@ -933,8 +948,11 @@ class ClientHelper(object):
             >>> client = automl_v1beta1.tables.ClientHelper(
             ...     client=automl_v1beta1.AutoMlClient(),
             ...     project='my-project', region='us-central1')
+            ...
+            >>> m = client.create_model('my_model', dataset_display_name='my_dataset')
             >>>
-            >>> d = client.create_model('my_model', dataset_display_name='my_dataset')
+            >>> m.result() # blocks on result
+            >>>
 
         Args:
             project (Optional[string]):
@@ -946,7 +964,7 @@ class ClientHelper(object):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
             model_display_name (string):
-                a human-readable name to refer to this model by.
+                A human-readable name to refer to this model by.
             train_budget_milli_node_hours (int):
                 The amount of time (in thousandths of an hour) to spend
                 training. This value must be between 1,000 and 72,000 inclusive
@@ -965,7 +983,7 @@ class ClientHelper(object):
                 are not supplied.
 
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types.Dataset` instance.
+            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
