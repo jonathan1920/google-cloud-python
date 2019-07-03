@@ -936,63 +936,10 @@ class ClientHelper(object):
                 self.__location_path(project=project, region=region)
         )
 
-    def create_model(self, model_display_name, dataset=None,
+        def create_model(self, model_display_name, dataset=None,
             dataset_display_name=None, dataset_name=None,
             train_budget_milli_node_hours=None, project=None,
-            region=None):
-        """Create a model. This will train your model on the given dataset.
-
-        Example:
-            >>> from google.cloud import automl_v1beta1
-            >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
-            ...     project='my-project', region='us-central1')
-            ...
-            >>> m = client.create_model('my_model', dataset_display_name='my_dataset')
-            >>>
-            >>> m.result() # blocks on result
-            >>>
-
-        Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
-                If you have initialized the client with a value for `region` it
-                will be used if this parameter is not supplied.
-            model_display_name (string):
-                A human-readable name to refer to this model by.
-            train_budget_milli_node_hours (int):
-                The amount of time (in thousandths of an hour) to spend
-                training. This value must be between 1,000 and 72,000 inclusive
-                (between 1 and 72 hours).
-            dataset_display_name (Optional[string]):
-                The human-readable name given to the dataset you want to train
-                your model on. This must be supplied if `dataset` or
-                `dataset_name` are not supplied.
-            dataset_name (Optional[string]):
-                The AutoML-assigned name given to the dataset you want to train
-                your model on. This must be supplied if `dataset_display_name`
-                or `dataset` are not supplied.
-            dataset (Optional[Dataset]):
-                The `Dataset` instance you want to train your model on. This
-                must be supplied if `dataset_display_name` or `dataset_name`
-                are not supplied.
-
-        Returns:
-            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                to a retryable error and retry attempts failed.
-            ValueError: If required parameters are missing.
-        """
+            region=None, input_feature_column_specs_included = None, input_feature_column_specs_excluded = None):
         if train_budget_milli_node_hours is None:
             raise ValueError('\'train_budget_milli_node_hours\' must be a '
                     'value between 1,000 and 72,000 inclusive')
@@ -1002,20 +949,42 @@ class ClientHelper(object):
                 dataset_display_name=dataset_display_name,
                 project=project,
                 region=region)
-
+        tables_model_metadata = {
+                'train_budget_milli_node_hours': train_budget_milli_node_hours
+        }
         dataset_id = dataset_name.rsplit('/', 1)[-1]
+        columns = [s for s in self.list_column_specs(dataset=dataset, dataset_name = dataset_name, dataset_display_name=dataset_display_name)]
+
+        final_columns = []
+        if input_feature_column_specs_included:
+            for a in columns:
+                if a.display_name in input_feature_column_specs_included:
+                    final_columns.append(a)
+
+            tables_model_metadata.update(
+                {'input_feature_column_specs': final_columns}
+            )
+        elif input_feature_column_specs_excluded:
+            for a in columns:
+                if a.display_name not in input_feature_column_specs_excluded:
+                    final_columns.append(a)
+
+            tables_model_metadata.update(
+                 {'input_feature_column_specs': final_columns}
+            )
+
         request = {
                 'display_name': model_display_name,
                 'dataset_id': dataset_id,
-                'tables_model_metadata': {
-                    'train_budget_milli_node_hours': train_budget_milli_node_hours
-                }
+                'tables_model_metadata': tables_model_metadata
         }
+
 
         return self.client.create_model(
                 self.__location_path(project=project, region=region),
                 request
         )
+
 
     def delete_model(self, model=None, model_display_name=None,
             model_name=None, project=None, region=None):
