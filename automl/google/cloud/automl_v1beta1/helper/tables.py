@@ -203,7 +203,7 @@ class ClientHelper(object):
         """
         return self.client.list_datasets(
                     self.__location_path(project=project, region=region)
-                )<<<<<<< jon-tables
+                )
 
     def get_dataset(self, project=None, region=None,
             dataset_name=None, dataset_display_name=None):
