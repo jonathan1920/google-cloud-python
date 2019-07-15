@@ -12,53 +12,89 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""A helper for the google.cloud.automl_v1beta1 AutoML Tables API"""
+"""A tables helper for the google.cloud.automl_v1beta1 AutoML API"""
 
+import pkg_resources
+
+from google.api_core.gapic_v1 import client_info
+from google.cloud import automl_v1beta1
 from google.cloud.automl_v1beta1.proto import data_types_pb2
 
-class ClientHelper(object):
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-automl").version
+
+class TablesClient(object):
     """
-    AutoML Server API helper.
+    AutoML Tables API helper.
 
     This is intended to simplify usage of the auto-generated python client,
     in particular for the `AutoML Tables product
     <https://cloud.google.com/automl-tables/>`_.
     """
-    def __init__(self, client=None, prediction_client=None, project=None,
-            region='us-central1'):
+    def __init__(self, project=None, region='us-central1', **kwargs):
         """Constructor.
 
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
-            ...     prediction_client=automl_v1beta1.PredictionServiceClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
 
         Args:
-            client (Optional[google.cloud.automl.v1beta1.AutoMlClient]): An
-                initialized AutoMLClient instance. This parameter is optional;
-                however, if you expect to make CRUD operations on either
-                models or datasets, this parameter needs to be set.
-                Additionally, if you want to make online predictions without
-                supplying a column schema, this client is during prediction.
-            prediction_client (Optional[google.cloud.automl.v1beta1.PredictionServiceClient]):
-                An initialized PredicitonServiceClient instance. This parameter
-                is optional; however, if you expect to make predictions, this
-                parameter needs to be set.
             project (Optional[string]): The project all future calls will
                 default to. Most methods take `project` as an optional
                 parameter, and can override your choice of `project` supplied
                 here.
-            region (Optional[string]): The reigon all future calls will
+            region (Optional[string]): The region all future calls will
                 default to. Most methods take `region` as an optional
                 parameter, and can override your choice of `region` supplied
                 here. Note, only `us-central1` is supported to-date.
+            transport (Union[~.AutoMlGrpcTransport, Callable[[~.Credentials, type], ~.AutoMlGrpcTransport]):
+                A transport instance, responsible for actually making the API
+                calls.  The default transport uses the gRPC protocol.  This
+                argument may also be a callable which returns a transport
+                instance. Callables will be sent the credentials as the first
+                argument and the default transport class as the second
+                argument.
+            channel (grpc.Channel): DEPRECATED. A ``Channel`` instance
+                through which to make calls. This argument is mutually exclusive
+                with ``credentials``; providing both will raise an exception.
+            credentials (google.auth.credentials.Credentials): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
+                This argument is mutually exclusive with providing a
+                transport instance to ``transport``; doing so will raise
+                an exception.
+            client_config (dict): DEPRECATED. A dictionary of call options for
+                each method. If not specified, the default configuration is used.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
-        self.client = client
-        self.prediction_client = prediction_client
+        version = _GAPIC_LIBRARY_VERSION
+        user_agent = 'automl-tables-wrapper/{}'.format(version)
+
+        client_info_ = kwargs.get('client_info')
+        if client_info_ is None:
+            client_info_ = client_info.ClientInfo(
+                    user_agent=user_agent,
+                    gapic_version=version
+            )
+        else:
+            client_info_.user_agent = user_agent
+            client_info_.gapic_version = version
+
+        self.client = automl_v1beta1.AutoMlClient(client_info=client_info_, 
+                **kwargs)
+        self.prediction_client = automl_v1beta1.PredictionServiceClient(
+                client_info=client_info_, 
+                **kwargs
+        )
         self.project = project
         self.region = region
 
@@ -151,8 +187,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> ds = client.list_datasets()
@@ -196,8 +234,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> d = client.get_dataset(dataset_display_name='my_dataset')
@@ -251,8 +291,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> d = client.create_dataset(dataset_display_name='my_dataset')
@@ -296,8 +338,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> op = client.delete_dataset(dataset_display_name='my_dataset')
@@ -355,8 +399,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> d = client.create_dataset(dataset_display_name='my_dataset')
@@ -444,8 +490,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> for s in client.list_table_specs(dataset_display_name='my_dataset')
@@ -505,8 +553,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> for s in client.list_column_specs(dataset_display_name='my_dataset')
@@ -585,8 +635,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> client.update_column_specs(dataset_display_name='my_dataset',
@@ -695,8 +747,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> client.set_target_column(dataset_display_name='my_dataset',
@@ -798,8 +852,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> client.set_weight_column(dataset_display_name='my_dataset',
@@ -902,8 +958,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> client.set_test_train_column(dataset_display_name='my_dataset',
@@ -1002,8 +1060,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> ms = client.list_models()
@@ -1044,19 +1104,22 @@ class ClientHelper(object):
             dataset_display_name=None, dataset_name=None,
             train_budget_milli_node_hours=None, project=None,
             region=None, input_feature_column_specs_included=None, input_feature_column_specs_excluded=None):
-    	"""Create a model. This will train your model on the given dataset.
+        """Create a model. This will train your model on the given dataset.
 
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> m = client.create_model('my_model', dataset_display_name='my_dataset')
             >>>
             >>> m.result() # blocks on result
             >>>
+
         Args:
             project (Optional[string]):
                 If you have initialized the client with a value for `project`
@@ -1085,11 +1148,11 @@ class ClientHelper(object):
                 must be supplied if `dataset_display_name` or `dataset_name`
                 are not supplied.
             input_feature_column_specs_included(Optional[string]):
-            	The list of the names of the columns you want to include to train 
-            	your model on.
+                The list of the names of the columns you want to include to train
+                your model on.
             input_feature_column_specs_excluded(Optional[string]):
-            	The list of the names of the columns you want to exclude and 
-            	not train your model on.
+                The list of the names of the columns you want to exclude and
+                not train your model on.
         Returns:
             A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
             instance.
@@ -1104,55 +1167,51 @@ class ClientHelper(object):
             raise ValueError('\'train_budget_milli_node_hours\' must be a '
                     'value between 1,000 and 72,000 inclusive')
 
-        if input_feature_column_specs_excluded not in [None, []] and input_feature_column_specs_included not in [None, []]:
-            raise ValueError('\'cannot set both input_feature_column_specs_excluded\' and '
+        if (input_feature_column_specs_excluded not in [None, []] and
+                input_feature_column_specs_included not in [None, []]):
+            raise ValueError('Cannot set both '
+                    '\'input_feature_column_specs_excluded\' and '
                     '\'input_feature_column_specs_included\'')
 
-
         dataset_name = self.__dataset_name_from_args(dataset=dataset,
-                dataset_name=dataset_name,
-                dataset_display_name=dataset_display_name,
-                project=project,
-                region=region)
+            dataset_name=dataset_name,
+            dataset_display_name=dataset_display_name,
+            project=project,
+            region=region)
+
         tables_model_metadata = {
-                'train_budget_milli_node_hours': train_budget_milli_node_hours
+            'train_budget_milli_node_hours': train_budget_milli_node_hours
         }
+
         dataset_id = dataset_name.rsplit('/', 1)[-1]
-        columns = [s for s in self.list_column_specs(dataset=dataset, dataset_name = dataset_name, dataset_display_name=dataset_display_name)]
+        columns = [s for s in self.list_column_specs(dataset=dataset,
+            dataset_name = dataset_name,
+            dataset_display_name=dataset_display_name)]
 
         final_columns = []
         if input_feature_column_specs_included:
-        	column_names = [a.display_name for a in columns]
-        	if not (all (name in column_names for name in input_feature_column_specs_included)):
-        		raise ValueError('invalid name in the list' '\'input_feature_column_specs_included\'')
-            for a in columns:
-                if a.display_name in input_feature_column_specs_included:
-                    final_columns.append(a)
+            for c in columns:
+                if c.display_name in input_feature_column_specs_included:
+                    final_columns.append(c)
 
-            tables_model_metadata.update(
-                {'input_feature_column_specs': final_columns}
-            )
+            tables_model_metadata['input_feature_column_specs'] = final_columns
         elif input_feature_column_specs_excluded:
             for a in columns:
                 if a.display_name not in input_feature_column_specs_excluded:
                     final_columns.append(a)
 
-            tables_model_metadata.update(
-                 {'input_feature_column_specs': final_columns}
-            )
+            tables_model_metadata['input_feature_column_specs'] = final_columns
 
         request = {
-                'display_name': model_display_name,
-                'dataset_id': dataset_id,
-                'tables_model_metadata': tables_model_metadata
+            'display_name': model_display_name,
+            'dataset_id': dataset_id,
+            'tables_model_metadata': tables_model_metadata
         }
 
-
         return self.client.create_model(
-                self.__location_path(project=project, region=region),
-                request
+             self.__location_path(project=project, region=region),
+             request
         )
-
 
     def delete_model(self, model=None, model_display_name=None,
             model_name=None, project=None, region=None):
@@ -1162,8 +1221,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> op = client.delete_model(model_display_name='my_model')
@@ -1219,8 +1280,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> d = client.get_model(model_display_name='my_model')
@@ -1273,8 +1336,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> op = client.deploy_model(model_display_name='my_model')
@@ -1332,8 +1397,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> op = client.undeploy_model(model_display_name='my_model')
@@ -1393,8 +1460,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     prediction_client=automl_v1beta1.PredictionServiceClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> client.predict(inputs={'Age': 30, 'Income': 12, 'Category': 'A'}
@@ -1479,8 +1548,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     prediction_client=automl_v1beta1.PredictionServiceClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> client.batch_predict(
