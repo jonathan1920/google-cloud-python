@@ -97,6 +97,7 @@ class ClientHelper(object):
             dataset_name = dataset.name
         return dataset_name
 
+
     def __table_spec_full_name_from_args(self, table_spec_index=0, 
             dataset=None, dataset_display_name=None,
             dataset_name=None, project=None, region=None):
@@ -202,7 +203,7 @@ class ClientHelper(object):
         """
         return self.client.list_datasets(
                     self.__location_path(project=project, region=region)
-                )
+                )<<<<<<< jon-tables
 
     def get_dataset(self, project=None, region=None,
             dataset_name=None, dataset_display_name=None):
@@ -811,6 +812,7 @@ class ClientHelper(object):
         """Sets the time column which designates which data
         will be of type timestamp and will be used for the timeseries data.
         . This column must be of type timestamp.
+
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
@@ -836,6 +838,7 @@ class ClientHelper(object):
             column_spec_display_name (Optional[string]):
                 The human-readable name of the column you want to set as the
                 time column. If this is supplied in place of
+
                 `column_spec_name`, you also need to provide either a way to
                 lookup the source dataset (using one of the `dataset*` kwargs),
                 or the `table_spec_name` of the table this column belongs to.
@@ -895,7 +898,7 @@ class ClientHelper(object):
                 dataset_display_name=dataset_display_name,
                 project=project,
                 region=region)
-        
+     
         table_spec_full_id = self.__table_spec_full_name_from_args(dataset_name=dataset_name)
         
         my_table_spec = {
@@ -928,12 +931,14 @@ class ClientHelper(object):
                 project=project,
                 region=region)
 
+
         request = {
                 'name': dataset_name,
                 'tables_dataset_metadata': {
                     'weight_column_spec_id': column_spec_id
                 }
         }
+
 
         return self.client.update_dataset(request)  
 
@@ -969,6 +974,7 @@ class ClientHelper(object):
             column_spec_display_name (Optional[string]):
                 The human-readable name of the column you want to set as the
                 weight column. If this is supplied in place of
+
                 `column_spec_name`, you also need to provide either a way to
                 lookup the source dataset (using one of the `dataset*` kwargs),
                 or the `table_spec_name` of the table this column belongs to.
@@ -1035,6 +1041,7 @@ class ClientHelper(object):
                 'name': dataset_name,
                 'tables_dataset_metadata': {
                     'weight_column_spec_id': column_spec_id
+
                 }
         }
 

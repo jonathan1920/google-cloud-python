@@ -12,33 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import datetime
-import os
+import pyarrow
 
-import pytest
-
-import quickstart
+from .. import query_to_arrow
 
 
-def now_millis():
-    return int(
-        (datetime.datetime.utcnow() - datetime.datetime(1970, 1, 1)).total_seconds()
-        * 1000
-    )
+def test_main(capsys, client):
 
+    arrow_table = query_to_arrow.main(client)
+    out, err = capsys.readouterr()
+    assert "Downloaded 8 rows, 2 columns." in out
 
-@pytest.fixture()
-def project_id():
-    return os.environ["PROJECT_ID"]
-
-
-def test_quickstart_wo_snapshot(capsys, project_id):
-    quickstart.main(project_id)
-    out, _ = capsys.readouterr()
-    assert "WA" in out
-
-
-def test_quickstart_with_snapshot(capsys, project_id):
-    quickstart.main(project_id, now_millis() - 5000)
-    out, _ = capsys.readouterr()
-    assert "WA" in out
+    arrow_schema = arrow_table.schema
+    assert arrow_schema.names == ["race", "participant"]
+    assert pyarrow.types.is_string(arrow_schema.types[0])
+    assert pyarrow.types.is_struct(arrow_schema.types[1])
