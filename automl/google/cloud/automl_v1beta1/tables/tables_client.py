@@ -752,112 +752,7 @@ class TablesClient(object):
         }
 
         return self.client.update_column_spec(request)
-        
-    def set_target_column(self, dataset=None, dataset_display_name=None,
-            dataset_name=None, table_spec_name=None, table_spec_index=0,
-            column_spec_name=None, column_spec_display_name=None,
-            project=None, region=None):
-        """Sets the target column for a given table.
-
-        Example:
-            >>> from google.cloud import automl_v1beta1
-            >>>
-            >>> from google.oauth2 import service_account
-            >>>
-            >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
-            ...     project='my-project', region='us-central1')
-            ...
-            >>> client.set_target_column(dataset_display_name='my_dataset',
-            ...     column_spec_display_name='Income')
-            ...
-
-        Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
-                If you have initialized the client with a value for `region` it
-                will be used if this parameter is not supplied.
-            column_spec_name (Optional[string]):
-                The name AutoML-assigned name for the column you want to set as
-                the target column.
-            column_spec_display_name (Optional[string]):
-                The human-readable name of the column you want to set as the
-                target column. If this is supplied in place of
-                `column_spec_name`, you also need to provide either a way to
-                lookup the source dataset (using one of the `dataset*` kwargs),
-                or the `table_spec_name` of the table this column belongs to.
-            table_spec_name (Optional[string]):
-                The AutoML-assigned name for the table whose target column you
-                want to set . If not supplied, the client can determine this
-                name from a source `Dataset` object.
-            table_spec_index (Optional[int]):
-                If no `table_spec_name` or `column_spec_name` was provided, we
-                use this index to determine which table to set the target
-                column on.
-            dataset_display_name (Optional[string]):
-                The human-readable name given to the dataset you want to update
-                the target column of. If no `table_spec_name` is supplied, this
-                will be used together with `table_spec_index` to infer the name
-                of table to update the target column of. This must be supplied
-                if `table_spec_name`, `dataset` or `dataset_name` are not
-                supplied.
-            dataset_name (Optional[string]):
-                The AutoML-assigned name given to the dataset you want to
-                update the target column of. If no `table_spec_name` is
-                supplied, this will be used together with `table_spec_index` to
-                infer the name of table to update the target column of. This
-                must be supplied if `table_spec_name`, `dataset` or
-                `dataset_display_name` are not supplied.
-            dataset (Optional[Dataset]):
-                The `Dataset` instance you want to update the target column of.
-                If no `table_spec_name` is supplied, this will be used together
-                with `table_spec_index` to infer the name of table to update
-                the target column of. This must be supplied if
-                `table_spec_name`, `dataset_name` or `dataset_display_name` are
-                not supplied.
-
-        Returns:
-            A :class:`~google.cloud.automl_v1beta1.types.Dataset` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                to a retryable error and retry attempts failed.
-            ValueError: If required parameters are missing.
-        """
-        column_spec_name = self.__column_spec_name_from_args(
-                dataset=dataset,
-                dataset_display_name=dataset_display_name,
-                dataset_name=dataset_name,
-                table_spec_name=table_spec_name,
-                table_spec_index=table_spec_index,
-                column_spec_name=column_spec_name,
-                column_spec_display_name=column_spec_display_name,
-                project=project,
-                region=region
-        )
-        column_spec_id = column_spec_name.rsplit('/', 1)[-1]
-
-        dataset_name = self.__dataset_name_from_args(dataset=dataset,
-                dataset_name=dataset_name,
-                dataset_display_name=dataset_display_name,
-                project=project,
-                region=region)
-
-        request = {
-                'name': dataset_name,
-                'tables_dataset_metadata': {
-                    'target_column_spec_id': column_spec_id
-                }
-        }
-
-        return self.client.update_dataset(request)
-
+    
     def set_time_column(self, dataset=None, dataset_display_name=None,
             dataset_name=None, table_spec_name=None, table_spec_index=0,
             column_spec_name=None, column_spec_display_name=None, 
@@ -962,11 +857,84 @@ class TablesClient(object):
         }
 
         response = self.client.update_table_spec(my_table_spec)  
-
-    def set_weight_column(self, dataset=None, dataset_display_name=None,
+  
+    def set_target_column(self, dataset=None, dataset_display_name=None,
             dataset_name=None, table_spec_name=None, table_spec_index=0,
             column_spec_name=None, column_spec_display_name=None,
             project=None, region=None):
+        """Sets the target column for a given table.
+
+        Example:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     project='my-project', region='us-central1')
+            ...
+            >>> client.set_target_column(dataset_display_name='my_dataset',
+            ...     column_spec_display_name='Income')
+            ...
+
+        Args:
+            project (Optional[string]):
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
+            region (Optional[string]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
+            column_spec_name (Optional[string]):
+                The name AutoML-assigned name for the column you want to set as
+                the target column.
+            column_spec_display_name (Optional[string]):
+                The human-readable name of the column you want to set as the
+                target column. If this is supplied in place of
+                `column_spec_name`, you also need to provide either a way to
+                lookup the source dataset (using one of the `dataset*` kwargs),
+                or the `table_spec_name` of the table this column belongs to.
+            table_spec_name (Optional[string]):
+                The AutoML-assigned name for the table whose target column you
+                want to set . If not supplied, the client can determine this
+                name from a source `Dataset` object.
+            table_spec_index (Optional[int]):
+                If no `table_spec_name` or `column_spec_name` was provided, we
+                use this index to determine which table to set the target
+                column on.
+            dataset_display_name (Optional[string]):
+                The human-readable name given to the dataset you want to update
+                the target column of. If no `table_spec_name` is supplied, this
+                will be used together with `table_spec_index` to infer the name
+                of table to update the target column of. This must be supplied
+                if `table_spec_name`, `dataset` or `dataset_name` are not
+                supplied.
+            dataset_name (Optional[string]):
+                The AutoML-assigned name given to the dataset you want to
+                update the target column of. If no `table_spec_name` is
+                supplied, this will be used together with `table_spec_index` to
+                infer the name of table to update the target column of. This
+                must be supplied if `table_spec_name`, `dataset` or
+                `dataset_display_name` are not supplied.
+            dataset (Optional[Dataset]):
+                The `Dataset` instance you want to update the target column of.
+                If no `table_spec_name` is supplied, this will be used together
+                with `table_spec_index` to infer the name of table to update
+                the target column of. This must be supplied if
+                `table_spec_name`, `dataset_name` or `dataset_display_name` are
+                not supplied.
+
+        Returns:
+            A :class:`~google.cloud.automl_v1beta1.types.Dataset` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                to a retryable error and retry attempts failed.
+            ValueError: If required parameters are missing.
+        """
         column_spec_name = self.__column_spec_name_from_args(
                 dataset=dataset,
                 dataset_display_name=dataset_display_name,
@@ -986,16 +954,14 @@ class TablesClient(object):
                 project=project,
                 region=region)
 
-
         request = {
                 'name': dataset_name,
                 'tables_dataset_metadata': {
-                    'weight_column_spec_id': column_spec_id
+                    'target_column_spec_id': column_spec_id
                 }
         }
 
-
-        return self.client.update_dataset(request)  
+        return self.client.update_dataset(request)
 
     def set_weight_column(self, dataset=None, dataset_display_name=None,
             dataset_name=None, table_spec_name=None, table_spec_index=0,
