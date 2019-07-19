@@ -1060,8 +1060,8 @@ class TablesClient(object):
         table_spec_full_id = self.__table_spec_full_name_from_args(dataset_name=dataset_name)
         
         my_table_spec = {
-        'name': table_spec_full_id,
-        'time_column_spec_id': column_spec_id
+            'name': table_spec_full_id,
+            'time_column_spec_id': column_spec_id
         }
 
         response = self.client.update_table_spec(my_table_spec)  
